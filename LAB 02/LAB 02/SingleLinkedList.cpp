@@ -1,4 +1,5 @@
 #include<iostream>
+#include<vector>
 using namespace std;
 
 
@@ -19,6 +20,9 @@ class SingleLinkedList {
 
 public:
 	SingleLinkedList() :head(NULL) {}
+	Node* getHead() {
+		return head;
+	}
 	void InsertAtBegin(int v) {
 		//create a node object for storing in linked list
 		Node* n = new Node(v);
@@ -110,12 +114,50 @@ public:
 			return;
 		}
 		for (int i = 0; i < idx-1; i++)
-		{
+			temp = temp->next;
+		Node* Next = temp->next;
+		temp->next = Next->next;
+	}
+	void Sorting() {
+		for (Node* list = head; list != NULL; list = list->next) {
+			Node* min_node = list;
+
+			for (Node* curr = list; curr != NULL; curr = curr->next) {
+				if (curr->data < min_node->data) {
+					min_node = curr;
+				}
+			}
+			if (min_node != list) {
+				int v = list->data;
+				list->data = min_node->data;
+				min_node->data = v;
+			}
+
+		}
+	}
+	void MergeList(SingleLinkedList& l) {
+		Node* temp = head;
+		while (temp->next) {
 			temp = temp->next;
 		}
-		Node* Next = temp->next;
-			temp->next = Next->next;
 
+		temp->next = l.getHead();
+	}
+	void reverse() {
+		vector<int> v;
+		Node* temp = head;
+		while (temp != NULL) {
+			v.push_back(temp->data);
+			temp = temp->next;
+		}
+		temp = head;
+		for (int i = 0; i < v.size(); i++)
+		{
+			if (temp != NULL) {
+				temp->data = v[(v.size()-1) - i];
+				temp = temp->next;
+			}
+		}
 	}
 	void Display() {
 		Node* temp = head;
@@ -137,16 +179,26 @@ int main() {
 	l.InsertAtBegin(12);
 	l.InsertAtBegin(13);
 	l.InsertAtEnd(15);
+	l.InsertAtBegin(1);
+	l.InsertAtEnd(-5);
 	l.InsertAtEnd(16);
 	l.Display();
-	int v;
+	SingleLinkedList l1;
+	l1.InsertAtBegin(12);
+	l1.InsertAtBegin(13);
+	l1.InsertAtEnd(15);
+	l1.InsertAtBegin(1);
+	l1.Display();
+	l.MergeList(l1);
+	/*int v;
 	cout << "\nEnter th value which you want to search :";
-	cin >> v;
+	cin >> v;*/
 	/*cout << "Enter index: ";
 	cin >> idx;*/
 
 	//l.InsertAfter(idx, v);
-	l.Delete(v);
+	//l.reverse();
+	//l.Sorting();
 	//l.Display();
 
 	l.Display();
